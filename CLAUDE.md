@@ -6,6 +6,42 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Agentic Graph RAG is a two-phase system for quantitative finance research that combines knowledge graph retrieval with epistemic reasoning. It tracks beliefs and uncertainties during the query loop, deciding when to explore more, simulate scenarios, or synthesize a final answer.
 
+## Getting Started
+
+```bash
+# 1. Start Neo4j (requires Docker)
+docker run -d --name neo4j-graph-rag \
+  -p 7474:7474 -p 7687:7687 \
+  -e NEO4J_AUTH=neo4j/password \
+  neo4j:latest
+
+# 2. Install dependencies
+pip install -e ".[dev]"
+
+# 3. Configure environment (copy and edit with your GEMINI_API_KEY)
+cp .env.example .env
+
+# 4. Ingest documents
+python -m src.main ingest ./data/
+
+# 5. Query the system
+python -m src.main query "What is variance risk premium?"
+```
+
+**Neo4j Management:**
+```bash
+# Stop Neo4j
+docker stop neo4j-graph-rag
+
+# Start existing container
+docker start neo4j-graph-rag
+
+# Remove container (data lost)
+docker rm neo4j-graph-rag
+
+# Neo4j Browser: http://localhost:7474 (login: neo4j/password)
+```
+
 ## Commands
 
 ```bash
